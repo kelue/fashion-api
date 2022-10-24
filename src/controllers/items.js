@@ -22,7 +22,23 @@ const getAllItems = async (req, res, next) => {
     }
 }
 
+const saveItem = async (req, res, next) => {
+    try {
+        const { name, brand, color } = req.body
+
+        //add item to database 
+        const item = await service.addItem({ name, brand, color })
+
+        //if successful return status and id of the new data
+        res.status(201).json({ data: item })
+    }catch(error){
+        next(error)
+    }
+
+}
+
 
 module.exports = {
-    getAllItems
+    getAllItems,
+    saveItem
 }
