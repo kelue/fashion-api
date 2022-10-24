@@ -3,9 +3,10 @@ const router = express.Router()
 
 //import handlers from controllers
 const {
-    getAllItems
+    getAllItems, saveItem
 } = require("../controllers/items")
 
-router.get("/", getAllItems)
+//chaining the routes
+router.route("/").get(getAllItems).post(saveItem)
 
 module.exports =  router
