@@ -1,6 +1,11 @@
 const express = require("express")
 const router = express.Router()
 
-router.get("/")
+//import handlers from controllers
+const {
+    getAllItems
+} = require("../controllers/items")
+
+router.get("/", getAllItems)
 
 module.exports =  router
