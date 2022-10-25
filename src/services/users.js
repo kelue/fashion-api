@@ -7,13 +7,12 @@ const { JWT_SECRET, expires } = process.env
 
 //find a user in the database using email
 const findUser = async ({ email }) => {
-
     //search for user using email
     const user = await db.oneOrNone('SELECT * FROM users WHERE email = $(email)', {email})
     return user
 }
 
-
+//create new user
 const createUser = async({ name, email, password }) => {
     //hash the password
     password = await bcrypt.hash(password, 10)
@@ -35,8 +34,21 @@ const createUser = async({ name, email, password }) => {
     }
 }
 
+//authenticate existing user
+const authenticateUser = async ({ email, password }, savedPassword) => {
+
+    //compare plaintext password to password in the database
+    const isPasswordValid = await bcrypt.compare(password, savedPassword)
+
+    //if they match, generate a token
+    if(isPasswordValid){
+        const token = jwt.sign({ email }, JWT_SECRET, {expiresIn: expires})
+
+        return { token }
+    }
+}
 
 
 module.exports = {
-    findUser, createUser
+    findUser, createUser, authenticateUser
 }
