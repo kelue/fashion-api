@@ -4,12 +4,15 @@ const cors = require("cors")
 
 //routes
 const itemsRouter = require("./routers/items")
+const usersRouter = require("./routers/users")
+const { initialize } = require("./utils/auth")
 
 const app = express()
 //midlewares
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(initialize())
 
 //logging every request made to the API
 app.use((req, res, next) => {
@@ -21,6 +24,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/v1/fashion", itemsRouter)
+app.use("/api/v1/users", usersRouter)
 
 
 //redirect requests to root to version 1 of the api

@@ -23,9 +23,11 @@ CREATE TABLE IF NOT EXISTS public.items (
 );
 
 
-INSERT INTO users (name, email, password) VALUES('john', 'john@email.com', 'secretpass');
+INSERT INTO users (name, email, password) 
+VALUES('john', 'john@email.com', '$2a$10$sY8YvHh1McNiBEL2n8BE1OQmtrz8dlbJCluwLRGDgrCXZcYogvkIq');
 
-INSERT INTO users (name, email, password) VALUES('amy', 'amy@email.com', 'amysecretpass');
+INSERT INTO users (name, email, password) 
+VALUES('amy', 'amy@email.com', '$2a$10$bcMEjyaNS0ETxr6NNsA8MO.HPFfQnFOfDKpsmUFEBOv4qC5NOXER6');
 
 INSERT INTO items (name, brand, color) VALUES('watch', 'rolex', 'gold');
 
