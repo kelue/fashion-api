@@ -5,12 +5,14 @@ const cors = require("cors")
 //routes
 const itemsRouter = require("./routers/items")
 const usersRouter = require("./routers/users")
+const { initialize } = require("./utils/auth")
 
 const app = express()
 //midlewares
 app.use(cors())
 app.use(express.json())
 app.use(express.urlencoded({ extended: true }))
+app.use(initialize())
 
 //logging every request made to the API
 app.use((req, res, next) => {
