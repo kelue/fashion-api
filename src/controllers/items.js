@@ -1,6 +1,19 @@
 const service = require("../services/items")
 
-//get all items with pagination
+//helper function
+const getItem = async (req, res, next) => {
+        const itemFound = await service.getItem(req.params.id)
+
+       if( itemFound === null ){
+            const err = new Error("Item not found")
+            err.statusCode = 404
+            next(err)
+        }
+
+        next()
+}
+
+//handler for get all items with pagination
 const getAllItems = async (req, res, next) => {
     try {
         //destructure page and size, if they are empty default to 3 for size and 1 for page
@@ -22,6 +35,7 @@ const getAllItems = async (req, res, next) => {
     }
 }
 
+//handler for add new item request
 const saveItem = async (req, res, next) => {
     try {
         const { name, brand, color } = req.body
@@ -34,11 +48,26 @@ const saveItem = async (req, res, next) => {
     }catch(error){
         next(error)
     }
+}
 
+//handler for update existing item
+const updateItem = async (req, res, next) => {
+    //retrieve request parameters
+    const { id } = req.params
+    const { name, brand, color } = req.body
+
+    try{
+        const update = await service.updateItem({ id, name, brand, color })
+
+        res.status(201).json({ data: update })
+    }catch(error){
+        next(error)
+    }
 }
 
 
 module.exports = {
     getAllItems,
-    saveItem
+    saveItem,
+    updateItem: [getItem, updateItem],
 }
