@@ -4,6 +4,7 @@ const cors = require("cors")
 
 //routes
 const itemsRouter = require("./routers/items")
+const usersRouter = require("./routers/users")
 
 const app = express()
 //midlewares
@@ -21,6 +22,7 @@ app.use((req, res, next) => {
 });
 
 app.use("/api/v1/fashion", itemsRouter)
+app.use("/api/v1/users", usersRouter)
 
 
 //redirect requests to root to version 1 of the api
