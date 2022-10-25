@@ -1,7 +1,7 @@
 const service = require("../services/items")
 
-//helper function
-const getItem = async (req, res, next) => {
+//helper function for checking that item exists
+const itemExists = async (req, res, next) => {
         const itemFound = await service.getItem(req.params.id)
 
        if( itemFound === null ){
@@ -65,9 +65,23 @@ const updateItem = async (req, res, next) => {
     }
 }
 
+//handler for delete existing item
+const deleteItem = async (req, res, next) => {
+    //retrieve id to delete from parameters
+    const {id} = req.params
+    try{
+        await service.deleteItem({ id }) //delete is not allowed as variable name
 
+        res.sendStatus(204)
+    }catch(error){
+        next(error)
+    }
+}
+
+//all the functions that have array use the recipe exists middle ware checker before they run
 module.exports = {
     getAllItems,
     saveItem,
-    updateItem: [getItem, updateItem],
+    updateItem: [itemExists, updateItem],
+    deleteItem: [itemExists, deleteItem]
 }

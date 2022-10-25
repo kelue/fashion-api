@@ -32,9 +32,17 @@ const updateItem = async ({id, name, brand, color }) => {
     return result
 }
 
+//delete an existing item in the database
+const deleteItem = async ({ id }) => {
+    
+    const result = db.one('DELETE FROM items WHERE id = $(id) RETURNING id', {id})
+    return result
+}
+
 module.exports = {
     getAll,
     addItem,
     getItem,
-    updateItem
+    updateItem,
+    deleteItem
 }
