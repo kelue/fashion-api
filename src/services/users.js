@@ -21,17 +21,14 @@ const createUser = async({ name, email, password }) => {
     const token = jwt.sign({ email }, JWT_SECRET, {expiresIn: expires})
 
     //save new user to the database
-    const newUser = await db.one(`
+    await db.one(`
     INSERT INTO users (name, email, password) 
     VALUES($(name), $(email), $(password))
     RETURNING *`,
     {name, email, password})
 
     //return new user details and the token
-    return {
-        newUser,
-        token
-    }
+    return { token }
 }
 
 //authenticate existing user

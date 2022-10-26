@@ -13,9 +13,15 @@ const userSignup = async (req, res, next) => {
             throw new Error("User with the email already exist!!")
         }
 
-        const newUser = await createUser({ name, email, password })
+        const { token } = await createUser({ name, email, password })
 
-        res.json({ newUser })
+        //return new user details
+        res.json({ data:{
+            name,
+            email,
+            token
+        }})
+        
     }catch(error){
         next(error)
     }
@@ -43,10 +49,14 @@ const userLogin = async (req, res, next) => {
             throw new Error("Could not login!")
         }
 
-        res.json({
-            user,
+        //destructure user name from user object
+        const { name } = user
+
+        res.json({data:{
+            name,
+            email,
             token
-        })
+        }})
 
     }catch(error){
         next(error)
