@@ -6,6 +6,7 @@ const cors = require("cors")
 const itemsRouter = require("./routers/items")
 const usersRouter = require("./routers/users")
 const { initialize } = require("./utils/auth")
+const { handleError } = require("./utils/error")
 
 const app = express()
 //midlewares
@@ -23,11 +24,8 @@ app.use((req, res, next) => {
     next();
 });
 
-app.use("/api/v1/fashion", itemsRouter)
-app.use("/api/v1/users", usersRouter)
 
-
-//redirect requests to root to version 1 of the api
+//redirect requests to root to default version of the api
 app.get("/", (req, res) => {
     const { page, size } = req.query
 
@@ -40,9 +38,15 @@ app.get("/", (req, res) => {
     }else{
         res.redirect("/api/v1/fashion")
     }
-
 });
 
+//api routes
+app.use("/api/v1/fashion", itemsRouter)
+app.use("/api/v1/users", usersRouter)
+
+
+//error handler
+app.use(handleError)
 
 const port = process.env.PORT || 8080
 app.listen(port, ()=>{
