@@ -38,6 +38,11 @@ const userLogin = async (req, res, next) => {
         //authenticate user
         const { token } = await authenticateUser({ email, password }, user.password)
 
+        //if password is incorrect
+        if(!token){
+            throw new Error("Could not login!")
+        }
+
         res.json({
             user,
             token

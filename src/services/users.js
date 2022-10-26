@@ -43,8 +43,9 @@ const authenticateUser = async ({ email, password }, savedPassword) => {
     //if they match, generate a token
     if(isPasswordValid){
         const token = jwt.sign({ email }, JWT_SECRET, {expiresIn: expires})
-
         return { token }
+    }else{
+        return false
     }
 }
 
